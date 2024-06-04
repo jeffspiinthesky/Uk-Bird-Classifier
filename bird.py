@@ -38,16 +38,18 @@ import os
 import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior( )
 
-modelFullPath = 'models/ukGardenModel.pb'
-labelsFullPath = 'models/ukGardenModel_labels.txt'
+modelFullPath = 'models/largeBirds4.pb'
+labelsFullPath = 'models/largeBirds4_labels.txt'
 
 
 def create_graph():
     """Creates a graph from saved GraphDef file and returns a saver."""
     # Creates graph from saved graph_def.pb.
-    with tf.gfile.FastGFile(modelFullPath, 'rb') as f:
+    with tf.io.gfile.GFile(modelFullPath, 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
         _ = tf.import_graph_def(graph_def, name='')
@@ -101,7 +103,7 @@ def printGraph(amount):
     for x in range(int(value)):
         sys.stdout.write("#")
     sys.stdout.flush()
-    print ""
+    print ("")
 
 
 if __name__ == '__main__':

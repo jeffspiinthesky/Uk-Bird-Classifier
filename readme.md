@@ -1,4 +1,10 @@
 # UK bird classifier
+# NOTE THIS IS A FORK OF THE ORIGINAL REPO CREATED BY SECRETBATCAVE. ALL CREDIT TO HIM FOR CREATING THIS CODE IN THE FIRST PLACE
+## Jeffs PI In The Sky updates
+* Get it to work in Python 3
+* Dockerise it
+
+# Purpose
 
 This is a pre-trained inception v3 tensorflow model that should be able to correctly classify common UK
 birds. 

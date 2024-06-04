@@ -77,7 +77,7 @@ def run_inference_on_image(imagePath):
         for node_id in top_k:
             human_string = labels[node_id]
             score = predictions[node_id]
-            print " {0}: {1}".format(human_string, score)
+            print (f" {human_string}: {score}")
             printGraph(score)
             # print('\t%s (score = %.5f)' % (human_string, score))
 
@@ -90,8 +90,8 @@ def findImages():
     '''
     for image in os.listdir("testImages"):
         if image.endswith(".jpg"):
-            print "Classifying {0}:".format(image)
-            run_inference_on_image("testImages/{0}".format(image))
+            print (f"Classifying {image}:")
+            run_inference_on_image(f"testImages/{image}")
 
 def printGraph(amount):
     '''takes a float between 0 and 1 and prints a graph
@@ -106,6 +106,6 @@ def printGraph(amount):
 
 if __name__ == '__main__':
     create_graph()
-    print "graph Created"
+    print ("graph Created")
     #run_inference_on_image('test.jpg')
     findImages()

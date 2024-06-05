@@ -42,8 +42,8 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior( )
 
-modelFullPath = 'models/largeBirds4.pb'
-labelsFullPath = 'models/largeBirds4_labels.txt'
+modelFullPath = 'models/ukGardenModel.pb'
+labelsFullPath = 'models/ukGardenModel_labels.txt'
 
 
 def create_graph():
@@ -66,23 +66,23 @@ def run_inference_on_image(imagePath):
 
 
     with tf.Session() as sess:
-
         softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
         predictions = sess.run(softmax_tensor,
                                {'DecodeJpeg/contents:0': image_data})
         predictions = np.squeeze(predictions)
-
         top_k = predictions.argsort()[-5:][::-1]  # Getting top 5 predictions
-        f = open(labelsFullPath, 'rb')
+        #f = open(labelsFullPath, 'rb')
+        f = open(labelsFullPath, 'r')
+        #lines = f.readlines()
         lines = f.readlines()
         labels = [str(w).replace("\n", "") for w in lines]
         for node_id in top_k:
             human_string = labels[node_id]
             score = predictions[node_id]
-            print (f" {human_string}: {score}")
-            printGraph(score)
+            #print (f" {human_string}: {score}")
+            #printGraph(score)
             # print('\t%s (score = %.5f)' % (human_string, score))
-
+        print(f'Most likely detected object is : {labels[top_k[0]]}  ({(predictions[top_k[0]])*100.0:.02f}%)')
         answer = labels[top_k[0]]
         return answer
 
@@ -90,10 +90,12 @@ def findImages():
     '''Finds all the Jpegs in a directory
     and feeds them into the model
     '''
+    print('Getting directory listing')
     for image in os.listdir("testImages"):
+        print(f'testing {image}')
         if image.endswith(".jpg"):
             print (f"Classifying {image}:")
-            run_inference_on_image(f"testImages/{image}")
+            result = run_inference_on_image(f"testImages/{image}")
 
 def printGraph(amount):
     '''takes a float between 0 and 1 and prints a graph
@@ -107,6 +109,7 @@ def printGraph(amount):
 
 
 if __name__ == '__main__':
+    print('Creating graph')
     create_graph()
     print ("graph Created")
     #run_inference_on_image('test.jpg')
